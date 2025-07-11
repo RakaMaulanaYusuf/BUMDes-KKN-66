@@ -2,108 +2,78 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { HiMenu } from 'react-icons/hi'; // Perlu install react-icons
 
-export default function Navbar() {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsMenuOpen(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <nav className="navbar fixed top-0 w-full z-50 bg-white/80 py-4 px-6">
-      <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <div className="text-2xl font-bold text-green-700 flex items-center">
-          <div className="w-8 h-8 bg-green-600 rounded-full mr-2 flex items-center justify-center">
-            <span className="text-white font-bold text-sm">B</span>
-          </div>
-          BUMDes Gentan
-        </div>
-        
-        <div className="space-x-8 hidden md:flex">
-          <button 
-            onClick={() => scrollToSection('beranda')}
-            className="hover:text-green-700 transition-colors duration-300 font-medium"
-          >
-            Beranda
-          </button>
-          <button 
-            onClick={() => scrollToSection('tentang')}
-            className="hover:text-green-700 transition-colors duration-300 font-medium"
-          >
-            Tentang
-          </button>
-          <button 
-            onClick={() => scrollToSection('layanan')}
-            className="hover:text-green-700 transition-colors duration-300 font-medium"
-          >
-            Layanan
-          </button>
-          <button 
-            onClick={() => scrollToSection('statistik')}
-            className="hover:text-green-700 transition-colors duration-300 font-medium"
-          >
-            Statistik
-          </button>
-          <button 
-            onClick={() => scrollToSection('kontak')}
-            className="hover:text-green-700 transition-colors duration-300 font-medium"
-          >
-            Kontak
+    <nav className="bg-white shadow-sm py-4">
+      <div className="container flex justify-between items-center">
+        <Link href="/" className="text-xl font-bold" style={{ color: 'var(--color-text-dark)' }}>
+          BUMDes
+          <span className="block text-sm font-normal -mt-1" style={{ color: 'var(--color-text-gray)' }}>GENTAN</span>
+        </Link>
+
+        {/* Hamburger Icon for Mobile */}
+        <div className="md:hidden">
+          <button onClick={toggleMenu} className="text-2xl" style={{ color: 'var(--color-text-dark)' }}>
+            <HiMenu />
           </button>
         </div>
 
-        <button 
-          className="md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex space-x-6 text-sm font-medium" style={{ color: 'var(--color-navbar-links)' }}>
+          <li>
+            <Link href="/">BERANDA</Link>
+          </li>
+          <li>
+            <Link href="/profile">PROFILE</Link>
+          </li>
+          <li>
+            <Link href="/berita">BERITA</Link>
+          </li>
+          <li>
+            <Link href="/galeri">GALERI</Link>
+          </li>
+          <li>
+            <Link href="/cepat-usaha">CEPAT USAHA</Link>
+          </li>
+        </ul>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-md border-t">
-          <div className="px-6 py-4 space-y-4">
-            <button 
-              onClick={() => scrollToSection('beranda')}
-              className="block w-full text-left hover:text-green-700 transition-colors duration-300"
-            >
-              Beranda
-            </button>
-            <button 
-              onClick={() => scrollToSection('tentang')}
-              className="block w-full text-left hover:text-green-700 transition-colors duration-300"
-            >
-              Tentang
-            </button>
-            <button 
-              onClick={() => scrollToSection('layanan')}
-              className="block w-full text-left hover:text-green-700 transition-colors duration-300"
-            >
-              Layanan
-            </button>
-            <button 
-              onClick={() => scrollToSection('statistik')}
-              className="block w-full text-left hover:text-green-700 transition-colors duration-300"
-            >
-              Statistik
-            </button>
-            <button 
-              onClick={() => scrollToSection('kontak')}
-              className="block w-full text-left hover:text-green-700 transition-colors duration-300"
-            >
-              Kontak
-            </button>
-          </div>
+        <div className="md:hidden fixed inset-0 bg-white z-50 flex flex-col items-center pt-20 animate-fade-in">
+          <button onClick={toggleMenu} className="absolute top-4 right-4 text-3xl" style={{ color: 'var(--color-text-dark)' }}>
+            × {/* Close icon */}
+          </button>
+          <ul className="flex flex-col space-y-6 text-xl font-medium" style={{ color: 'var(--color-navbar-links)' }}>
+            <li>
+              <Link href="/" onClick={toggleMenu}>BERANDA</Link>
+            </li>
+            <li>
+              <Link href="/profile" onClick={toggleMenu}>PROFILE</Link>
+            </li>
+            <li>
+              <Link href="/berita" onClick={toggleMenu}>BERITA</Link>
+            </li>
+            <li>
+              <Link href="/galeri" onClick={toggleMenu}>GALERI</Link>
+            </li>
+            <li>
+              <Link href="/cepat-usaha" onClick={toggleMenu}>CEPAT USAHA</Link>
+            </li>
+          </ul>
         </div>
       )}
     </nav>
   );
-}
+};
+
+export default Navbar;
